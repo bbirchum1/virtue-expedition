@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtue Header — The Virtue Expedition</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <script src="../shared/virtues.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      overflow: hidden;
+    }
+
+    .header-panel {
+      width: 100%;
+      max-width: 820px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, #FAEEDA 0%, #F9E2C4 100%);
+      border-radius: 20px;
+      padding: 28px 32px;
+      position: relative;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    /* Background illustration sits in the right portion of the card */
+    .bg-illustration {
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 160px;
+      height: 180px;
+      opacity: 0.16;
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 580px;
+    }
+
+    /* Station pill */
+    .station-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFFFF;
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 1.5px solid var(--amber-primary);
+      margin-bottom: 14px;
+      animation: fadeSlide 0.7s ease-out both;
+    }
+    .station-pill .numeral {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--amber-dark);
+      line-height: 1;
+    }
+    .station-pill .station-of-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--amber-dark);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .station-name {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--amber-dark);
+      margin: 0 0 4px;
+      animation: fadeSlide 0.7s ease-out 0.1s both;
+    }
+
+    .headline {
+      font-family: var(--font-serif);
+      font-size: 38px;
+      font-weight: 500;
+      margin: 0 0 16px;
+      color: var(--text-dark);
+      letter-spacing: -0.015em;
+      line-height: 1.05;
+      animation: fadeSlide 0.7s ease-out 0.2s both;
+    }
+
+    .tagline-box {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.6);
+      border-left: 3px solid var(--amber-primary);
+      padding: 10px 16px;
+      border-radius: 0 10px 10px 0;
+      max-width: 540px;
+      animation: fadeSlide 0.7s ease-out 0.3s both;
+    }
+    .tagline {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-style: italic;
+      color: var(--text-dark);
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 700px) {
+      .bg-illustration { width: 120px; height: 140px; right: 18px; }
+      .headline { font-size: 28px; }
+      .header-panel { padding: 22px 24px; }
+    }
+
+    @media (max-width: 500px) {
+      .bg-illustration { display: none; }
+      .content { max-width: 100%; }
+      .headline { font-size: 24px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .station-pill, .station-name, .headline, .tagline-box {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-panel">
+    <!-- Background illustration slot: changes per virtue -->
+    <svg class="bg-illustration" id="bg-illustration" viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
+      <!-- Filled in by JS based on virtue -->
+    </svg>
+
+    <div class="content">
+      <div class="station-pill">
+        <span class="numeral" id="station-numeral">I</span>
+        <span class="station-of-label" id="station-of-label">Station 1 of 7</span>
+      </div>
+      <p class="station-name" id="station-name">The Invitation</p>
+      <h1 class="headline" id="headline">What is courage, really?</h1>
+      <div class="tagline-box">
+        <p class="tagline" id="tagline">Courage is not the absence of fear. It is walking straight into the fear and doing the thing anyway.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================
+    // Virtue Header — URL-parameterized
+    // =========================================================
+    // Accepts:
+    //   ?virtue=courage              (which virtue - default courage)
+    //   ?station=1                   (which station 1-7 - default 1)
+    //   ?headline=What+is+courage%3F (custom headline - optional, overrides default)
+    //   ?tagline=...                 (custom tagline - optional, overrides default)
+    // =========================================================
+
+    const P = new URLSearchParams(window.location.search);
+    const virtueKey = window.VIRTUE_EXPEDITION.normalizeVirtueKey(P.get('virtue')) || 'courage';
+    const stationNum = parseInt(P.get('station'), 10) || 1;
+    const customHeadline = P.get('headline');
+    const customTagline = P.get('tagline');
+
+    const virtue = window.VIRTUE_EXPEDITION.virtues[virtueKey]
+                 || window.VIRTUE_EXPEDITION.virtues.courage;
+    const station = window.VIRTUE_EXPEDITION.stations[stationNum]
+                  || window.VIRTUE_EXPEDITION.stations[1];
+
+    // Populate station pill
+    document.getElementById('station-numeral').textContent = station.numeral;
+    document.getElementById('station-of-label').textContent = `Station ${stationNum} of 7`;
+
+    // Populate station name
+    document.getElementById('station-name').textContent = station.name;
+
+    // Populate headline (default: station name applied to virtue)
+    const defaultHeadline = customHeadline
+      ? decodeURIComponent(customHeadline)
+      : `${station.name}: ${virtue.label}`;
+    document.getElementById('headline').textContent = defaultHeadline;
+
+    // Populate tagline (default: virtue tagline)
+    const defaultTagline = customTagline
+      ? decodeURIComponent(customTagline)
+      : virtue.tagline;
+    document.getElementById('tagline').textContent = defaultTagline;
+
+    // ---- Virtue-specific background illustration ----
+    // Each virtue gets a thematically appropriate illustration
+    // matching its landmark on the journey map
+    const ILLUSTRATIONS = {
+      courage: `
+        <rect x="65" y="60" width="30" height="42" fill="#854F0B" stroke="#412402" stroke-width="2"/>
+        <path d="M 60,60 L 80,38 L 100,60 Z" fill="#854F0B"/>
+        <rect x="73" y="75" width="14" height="18" fill="#3E2510"/>
+        <circle cx="80" cy="28" r="15" fill="#F7A928"/>
+        <path d="M 80,14 Q 86,22 80,30 Q 74,22 80,14 Z" fill="#E07A3C"/>
+        <line x1="80" y1="102" x2="80" y2="150" stroke="#412402" stroke-width="2"/>
+        <circle cx="80" cy="155" r="5" fill="#412402"/>
+      `,
+      honesty: `
+        <!-- Scale -->
+        <rect x="72" y="150" width="16" height="10" fill="#412402"/>
+        <line x1="80" y1="150" x2="80" y2="70" stroke="#412402" stroke-width="3"/>
+        <line x1="40" y1="70" x2="120" y2="70" stroke="#412402" stroke-width="3" stroke-linecap="round"/>
+        <line x1="40" y1="70" x2="40" y2="95" stroke="#412402" stroke-width="1.5"/>
+        <line x1="120" y1="70" x2="120" y2="95" stroke="#412402" stroke-width="1.5"/>
+        <path d="M 25,95 Q 40,110 55,95 Z" fill="#412402"/>
+        <path d="M 105,95 Q 120,110 135,95 Z" fill="#412402"/>
+        <circle cx="80" cy="64" r="5" fill="#412402"/>
+      `,
+      responsibility: `
+        <!-- Oak tree -->
+        <rect x="72" y="110" width="16" height="50" fill="#412402"/>
+        <circle cx="60" cy="85" r="28" fill="#412402"/>
+        <circle cx="100" cy="80" r="30" fill="#412402"/>
+        <circle cx="80" cy="60" r="25" fill="#412402"/>
+        <circle cx="75" cy="95" r="22" fill="#412402"/>
+      `,
+      courtesy: `
+        <!-- Stone arch -->
+        <rect x="40" y="60" width="20" height="100" fill="#412402"/>
+        <rect x="100" y="60" width="20" height="100" fill="#412402"/>
+        <path d="M 40,60 Q 80,20 120,60" stroke="#412402" stroke-width="15" fill="none"/>
+        <rect x="36" y="60" width="28" height="8" fill="#412402"/>
+        <rect x="96" y="60" width="28" height="8" fill="#412402"/>
+      `,
+      service: `
+        <!-- Bridge -->
+        <path d="M 20,120 Q 80,50 140,120" stroke="#412402" stroke-width="8" fill="none"/>
+        <path d="M 20,124 Q 80,54 140,124" stroke="#412402" stroke-width="4" fill="none"/>
+        <line x1="20" y1="120" x2="20" y2="140" stroke="#412402" stroke-width="5"/>
+        <line x1="140" y1="120" x2="140" y2="140" stroke="#412402" stroke-width="5"/>
+        <path d="M 15,142 Q 35,138 55,142 Q 75,146 95,142 Q 115,138 135,142 Q 145,146 155,142"
+              stroke="#412402" stroke-width="2" fill="none"/>
+      `,
+      perseverance: `
+        <!-- Mountain peak -->
+        <path d="M 20,160 L 80,30 L 140,160 Z" fill="#412402"/>
+        <path d="M 62,70 L 80,30 L 100,73 L 80,90 Z" fill="#FFFFFF"/>
+        <line x1="80" y1="30" x2="80" y2="10" stroke="#412402" stroke-width="2"/>
+        <path d="M 80,10 L 100,14 L 80,18 Z" fill="#412402"/>
+      `,
+      selfgovt: `
+        <!-- Compass rose -->
+        <circle cx="80" cy="80" r="50" fill="none" stroke="#412402" stroke-width="3"/>
+        <circle cx="80" cy="80" r="38" fill="none" stroke="#412402" stroke-width="1"/>
+        <path d="M 80,40 L 86,80 L 80,120 L 74,80 Z" fill="#412402"/>
+        <path d="M 40,80 L 80,74 L 120,80 L 80,86 Z" fill="#412402"/>
+        <circle cx="80" cy="80" r="4" fill="#412402"/>
+        <text x="80" y="35" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#412402" font-weight="bold">N</text>
+      `,
+    };
+
+    const bg = document.getElementById('bg-illustration');
+    bg.innerHTML = ILLUSTRATIONS[virtueKey] || ILLUSTRATIONS.courage;
+
+    // Report height to parent frame
+    function reportHeight() {
+      try {
+        window.parent.postMessage({
+          type: 'virtue-widget-height',
+          widget: 'virtue-header',
+          height: document.body.scrollHeight
+        }, '*');
+      } catch (e) {}
+    }
+    window.addEventListener('load', reportHeight);
+    window.addEventListener('resize', reportHeight);
+  </script>
+</body>
+</html>

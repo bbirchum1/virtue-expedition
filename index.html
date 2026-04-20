@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Virtue Expedition — Widget Gallery</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      background: var(--cream-light);
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      font-weight: 500;
+      margin: 0 0 4px;
+    }
+    .subtitle {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--text-mid);
+      margin: 0 0 8px;
+    }
+    .intro {
+      background: #FFFFFF;
+      border: 1px solid var(--cream-line);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 24px 0 32px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .intro code, .state-desc code {
+      background: var(--cream-mid);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: Menlo, Consolas, monospace;
+      font-size: 13px;
+      color: var(--amber-dark);
+    }
+    h2 {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 500;
+      margin: 60px 0 6px;
+      color: var(--amber-dark);
+      padding-top: 20px;
+      border-top: 2px solid var(--cream-line);
+    }
+    h2:first-of-type { border-top: 0; padding-top: 0; margin-top: 40px; }
+    .widget-intro {
+      font-size: 15px;
+      color: var(--text-mid);
+      margin: 0 0 24px;
+      line-height: 1.6;
+    }
+    h3 {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 500;
+      margin: 32px 0 6px;
+      color: var(--text-dark);
+    }
+    .state-desc {
+      font-size: 14px;
+      color: var(--text-mid);
+      margin: 0 0 12px;
+      font-style: italic;
+    }
+    .state-desc code {
+      font-style: normal;
+      font-size: 12px;
+    }
+    iframe {
+      display: block;
+      width: 100%;
+      max-width: 820px;
+      border: 0;
+      margin: 0 auto;
+      border-radius: 20px;
+    }
+    iframe.map { height: 360px; }
+    iframe.stamp { height: 180px; }
+    iframe.header { height: 260px; }
+
+    footer {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid var(--cream-line);
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-faint);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <h1>The Virtue Expedition</h1>
+    <p class="subtitle">Widget Gallery &middot; for Canvas embedding</p>
+
+    <div class="intro">
+      <p style="margin: 0 0 10px;"><strong>This page is for teachers and admins.</strong> It previews every widget in the expedition's design system so you can verify what will appear in Canvas before you embed it.</p>
+      <p style="margin: 0;">Three widgets are available: the <strong>Journey Map</strong> (top-of-page landscape), the <strong>Virtue Header</strong> (activity title card), and the <strong>Passage Stamp</strong> (reward moment). Copy the URL from any preview below to embed that state in Canvas. Full embed instructions are in the <a href="README.md" style="color: var(--amber-dark);">README</a>.</p>
+    </div>
+
+    <!-- ==================== JOURNEY MAP ==================== -->
+    <h2>Journey Map</h2>
+    <p class="widget-intro">
+      The illustrated landscape banner at the top of every activity page. Shows the scholar's progress through all seven virtues as landmarks on a trail. Parameters: <code>?current=</code>, <code>?completed=</code>, <code>?grade=</code>.
+    </p>
+
+    <h3>Beginning the expedition</h3>
+    <p class="state-desc">On Courage, nothing completed yet. <code>?current=courage</code></p>
+    <iframe class="map" src="journey-map/?current=courage" title="Journey Map - Start"></iframe>
+
+    <h3>Halfway through</h3>
+    <p class="state-desc">Three earned, on Courtesy. <code>?current=courtesy&amp;completed=courage,honesty,responsibility</code></p>
+    <iframe class="map" src="journey-map/?current=courtesy&completed=courage,honesty,responsibility" title="Journey Map - Halfway"></iframe>
+
+    <h3>Expedition complete</h3>
+    <p class="state-desc">All seven earned. <code>?completed=courage,honesty,responsibility,courtesy,service,perseverance,selfgovt</code></p>
+    <iframe class="map" src="journey-map/?current=selfgovt&completed=courage,honesty,responsibility,courtesy,service,perseverance,selfgovt" title="Journey Map - Complete"></iframe>
+
+    <!-- ==================== VIRTUE HEADER ==================== -->
+    <h2>Virtue Header</h2>
+    <p class="widget-intro">
+      The archway title card for the top of each activity, below the Journey Map. Shows the station pill, activity name, big headline, and a tagline. Each virtue has its own faint background illustration. Parameters: <code>?virtue=</code>, <code>?station=</code>, optional <code>?headline=</code> and <code>?tagline=</code>.
+    </p>
+
+    <h3>Courage &middot; Station 1 (custom headline)</h3>
+    <p class="state-desc"><code>?virtue=courage&amp;station=1&amp;headline=What+is+courage%2C+really%3F</code></p>
+    <iframe class="header" src="virtue-header/?virtue=courage&station=1&headline=What%20is%20courage%2C%20really%3F" title="Virtue Header - Courage Invitation"></iframe>
+
+    <h3>Courage &middot; Station 2 (custom headline + tagline)</h3>
+    <p class="state-desc">Custom text about the story. <code>?virtue=courage&amp;station=2&amp;headline=The+Lamp-Lighter's+Daughter&amp;tagline=...</code></p>
+    <iframe class="header" src="virtue-header/?virtue=courage&station=2&headline=The%20Lamp-Lighter%E2%80%99s%20Daughter&tagline=A%20girl%20must%20cross%20the%20bridge%20she%20fears%20most." title="Virtue Header - Courage First Encounter"></iframe>
+
+    <h3>Honesty &middot; Station 1</h3>
+    <p class="state-desc">Different virtue, different illustration. <code>?virtue=honesty&amp;station=1</code></p>
+    <iframe class="header" src="virtue-header/?virtue=honesty&station=1&headline=What%20does%20honesty%20really%20mean%3F" title="Virtue Header - Honesty"></iframe>
+
+    <h3>Perseverance &middot; Station 5 (defaults)</h3>
+    <p class="state-desc">No custom headline — the widget fills in defaults. <code>?virtue=perseverance&amp;station=5</code></p>
+    <iframe class="header" src="virtue-header/?virtue=perseverance&station=5" title="Virtue Header - Perseverance default"></iframe>
+
+    <!-- ==================== PASSAGE STAMP ==================== -->
+    <h2>Passage Stamp</h2>
+    <p class="widget-intro">
+      The celebratory reward moment at the end of a completed station, before &ldquo;Up Next.&rdquo; Animated: seal enters with a small bounce, then a glow ring pulses quietly. Parameters: <code>?virtue=</code>, <code>?station=</code>.
+    </p>
+
+    <h3>Courage &middot; Station 1</h3>
+    <p class="state-desc">&ldquo;Your first passage stamp is earned!&rdquo; <code>?virtue=courage&amp;station=1</code></p>
+    <iframe class="stamp" src="passage-stamp/?virtue=courage&station=1" title="Passage Stamp - Courage 1"></iframe>
+
+    <h3>Courage &middot; Station 6 (next-to-last)</h3>
+    <p class="state-desc">&ldquo;One more station and the Seal of Courage awaits.&rdquo; <code>?virtue=courage&amp;station=6</code></p>
+    <iframe class="stamp" src="passage-stamp/?virtue=courage&station=6" title="Passage Stamp - Courage 6"></iframe>
+
+    <h3>Courage &middot; Station 7 (virtue complete)</h3>
+    <p class="state-desc">&ldquo;You have earned the Seal of Courage!&rdquo; <code>?virtue=courage&amp;station=7</code></p>
+    <iframe class="stamp" src="passage-stamp/?virtue=courage&station=7" title="Passage Stamp - Courage 7"></iframe>
+
+    <h3>Honesty &middot; Station 1</h3>
+    <p class="state-desc">Virtue name updates automatically. <code>?virtue=honesty&amp;station=1</code></p>
+    <iframe class="stamp" src="passage-stamp/?virtue=honesty&station=1" title="Passage Stamp - Honesty 1"></iframe>
+
+    <footer>
+      The Virtue Expedition &middot; a year-long enrichment curriculum for Grades 3&ndash;5<br/>
+      See <a href="README.md" style="color: var(--amber-dark);">README</a> for embed instructions.
+    </footer>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# Preview screenshots generated during development
+preview-*.png
+preview-*.jpg
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Node (in case you ever add build tooling)
+node_modules/
+npm-debug.log

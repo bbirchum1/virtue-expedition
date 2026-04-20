@@ -1,0 +1,47 @@
+/* =======================================================
+   The Virtue Expedition — Shared Design System
+   Used by all widgets in the expedition.
+   ======================================================= */
+
+:root {
+  /* Amber core palette (Grade 4) */
+  --amber-primary: #BA7517;
+  --amber-dark: #854F0B;
+  --amber-deep: #6B3D08;
+  --text-dark: #412402;
+  --text-mid: #6B5D48;
+  --text-faint: #8A7860;
+  --cream-light: #FAF3E4;
+  --cream-mid: #FAEEDA;
+  --cream-deep: #F9E2C4;
+  --cream-line: #F0E4CC;
+  --cream-bg: #FFF7E4;
+
+  /* Landscape colors */
+  --sky-top: #FFD9B0;
+  --sky-mid: #F9D7C0;
+  --sky-base: #E6D8CB;
+  --sun-core: #F7A928;
+  --sun-glow: #FCD38A;
+  --mountain-far: #A29AB8;
+  --mountain-near: #8C85A3;
+  --hill-mid-top: #A8BA8A;
+  --hill-mid-base: #85A36A;
+  --hill-near-top: #7FA167;
+  --hill-near-base: #5C7E48;
+  --path-gold: #D4A055;
+  --path-shadow: #8A5718;
+
+  /* Virtue accent colors (used for landmarks and highlights) */
+  --virtue-courage: #E07A3C;       /* orange-red, lantern flame */
+  --virtue-honesty: #4F9BA8;       /* clear teal, scale/mirror */
+  --virtue-responsibility: #6B8E4F;/* oak green */
+  --virtue-courtesy: #A69684;      /* warm stone */
+  --virtue-service: #9B7049;       /* bridge wood */
+  --virtue-perseverance: #6A7A85;  /* mountain slate */
+  --virtue-selfgovt: #8A6FA8;      /* compass violet */
+
+  /* Typography */
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
