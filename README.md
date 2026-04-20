@@ -73,12 +73,12 @@ The archway title card that sits at the top of each activity, below the Journey 
 
 ### URL parameters
 
-| Parameter  | Values                          | Default                 | Example                                  |
-|------------|---------------------------------|-------------------------|------------------------------------------|
-| `virtue`   | virtue key                      | `courage`               | `?virtue=honesty`                        |
-| `station`  | `1`–`7`                         | `1`                     | `?station=5`                             |
-| `headline` | URL-encoded custom headline     | *(auto-generated)*      | `?headline=What+is+courage%3F`           |
-| `tagline`  | URL-encoded custom tagline      | *(uses virtue default)* | `?tagline=A+girl+must+cross...`          |
+| Parameter  | Values                          | Default              | Example                        |
+|------------|---------------------------------|----------------------|--------------------------------|
+| `virtue`   | virtue key                      | `courage`            | `?virtue=honesty`              |
+| `station`  | `1`–`7`                         | `1`                  | `?station=5`                   |
+| `headline` | URL-encoded custom headline     | (auto-generated)     | `?headline=What+is+courage%3F` |
+| `tagline`  | URL-encoded custom tagline      | (uses virtue default)| `?tagline=A+girl+must+cross...`|
 
 If you omit `headline`, it defaults to `"[Station Name]: [Virtue Name]"` — e.g., "The Invitation: Courage".
 If you omit `tagline`, it uses the virtue's standard tagline.
