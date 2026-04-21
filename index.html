@@ -87,6 +87,7 @@
     iframe.map { height: 360px; }
     iframe.stamp { height: 180px; }
     iframe.header { height: 260px; }
+    iframe.upnext { height: 200px; }
 
     footer {
       margin-top: 80px;
@@ -170,6 +171,24 @@
     <h3>Honesty &middot; Station 1</h3>
     <p class="state-desc">Virtue name updates automatically. <code>?virtue=honesty&amp;station=1</code></p>
     <iframe class="stamp" src="passage-stamp/?virtue=honesty&station=1" title="Passage Stamp - Honesty 1"></iframe>
+
+    <!-- ==================== UP NEXT ==================== -->
+    <h2>Up Next</h2>
+    <p class="widget-intro">
+      The preview card at the bottom of every activity page (except the last of each virtue) that teases the next station. Small landscape tile on the left showing the virtue's landmark, with headline + tagline + Continue button on the right. Parameters: <code>?virtue=</code>, <code>?nextStation=</code>, optional <code>?headline=</code>, <code>?tagline=</code>, <code>?href=</code>.
+    </p>
+
+    <h3>Courage &middot; Pointing to Station 2</h3>
+    <p class="state-desc">Shows "The Lamp-Lighter's Daughter" with lantern-in-rain scene. <code>?virtue=courage&amp;nextStation=2&amp;headline=...</code></p>
+    <iframe class="upnext" src="up-next/?virtue=courage&nextStation=2&headline=The%20Lamp-Lighter%E2%80%99s%20Daughter&tagline=A%20storm%20is%20rolling%20in%2C%20and%20a%20girl%20named%20Elowen%20is%20about%20to%20be%20asked%20something%20impossible." title="Up Next - Courage 2"></iframe>
+
+    <h3>Honesty &middot; Pointing to Station 2</h3>
+    <p class="state-desc">Different virtue, different landmark in the preview. <code>?virtue=honesty&amp;nextStation=2</code></p>
+    <iframe class="upnext" src="up-next/?virtue=honesty&nextStation=2&headline=The%20Counted%20Coins&tagline=A%20girl%20finds%20two%20extra%20coppers%20at%20closing%20time.%20No%20one%20would%20ever%20know.%20Someone%20does." title="Up Next - Honesty 2"></iframe>
+
+    <h3>Perseverance &middot; defaults (no custom headline)</h3>
+    <p class="state-desc"><code>?virtue=perseverance&amp;nextStation=3</code></p>
+    <iframe class="upnext" src="up-next/?virtue=perseverance&nextStation=3" title="Up Next - Perseverance default"></iframe>
 
     <footer>
       The Virtue Expedition &middot; a year-long enrichment curriculum for Grades 3&ndash;5<br/>

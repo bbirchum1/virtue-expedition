@@ -15,6 +15,8 @@ virtue-expedition/
 │   └── index.html           ← widget 2: activity title card
 ├── passage-stamp/
 │   └── index.html           ← widget 3: celebratory reward moment
+├── up-next/
+│   └── index.html           ← widget 4: next-station preview card
 └── shared/
     ├── tokens.css           ← design tokens (colors, fonts) used by all widgets
     └── virtues.js           ← single source of truth for virtue metadata
@@ -73,12 +75,12 @@ The archway title card that sits at the top of each activity, below the Journey 
 
 ### URL parameters
 
-| Parameter  | Values                          | Default              | Example                        |
-|------------|---------------------------------|----------------------|--------------------------------|
-| `virtue`   | virtue key                      | `courage`            | `?virtue=honesty`              |
-| `station`  | `1`–`7`                         | `1`                  | `?station=5`                   |
-| `headline` | URL-encoded custom headline     | (auto-generated)     | `?headline=What+is+courage%3F` |
-| `tagline`  | URL-encoded custom tagline      | (uses virtue default)| `?tagline=A+girl+must+cross...`|
+| Parameter  | Values                          | Default                 | Example                                  |
+|------------|---------------------------------|-------------------------|------------------------------------------|
+| `virtue`   | virtue key                      | `courage`               | `?virtue=honesty`                        |
+| `station`  | `1`–`7`                         | `1`                     | `?station=5`                             |
+| `headline` | URL-encoded custom headline     | *(auto-generated)*      | `?headline=What+is+courage%3F`           |
+| `tagline`  | URL-encoded custom tagline      | *(uses virtue default)* | `?tagline=A+girl+must+cross...`          |
 
 If you omit `headline`, it defaults to `"[Station Name]: [Virtue Name]"` — e.g., "The Invitation: Courage".
 If you omit `tagline`, it uses the virtue's standard tagline.
@@ -132,6 +134,38 @@ Remaining-stations subline also adjusts ("Six more stations...", "One more stati
 <iframe
   src="https://YOUR_USERNAME.github.io/virtue-expedition/passage-stamp/?virtue=courage&station=1"
   width="100%" height="180" frameborder="0" scrolling="no"
+  style="display:block;border:0;max-width:820px;margin:0 auto 20px;">
+</iframe>
+```
+
+---
+
+## Widget 4: Up Next
+
+**Live URL:** `https://YOUR_USERNAME.github.io/virtue-expedition/up-next/`
+
+The preview card at the bottom of every activity page (except the final one per virtue) that teases the next station. Shows the virtue's landmark as a small illustrated scene, with the next activity's title, a one-sentence hook, and a Continue button.
+
+### URL parameters
+
+| Parameter     | Values                            | Default                 | Example                              |
+|---------------|-----------------------------------|-------------------------|--------------------------------------|
+| `virtue`      | virtue key                        | `courage`               | `?virtue=honesty`                    |
+| `nextStation` | `2`–`7`                           | `2`                     | `?nextStation=3`                     |
+| `headline`    | URL-encoded next activity title   | *(auto-generated)*      | `?headline=The+Counted+Coins`        |
+| `tagline`     | URL-encoded one-sentence hook     | *(uses virtue default)* | `?tagline=A+girl+finds+two+extra...` |
+| `href`        | optional URL for Continue button  | `#`                     | `?href=https://example.com/page2`    |
+
+If you omit `headline`, it defaults to `"[Station Name]: [Virtue Name]"`.
+If you omit `tagline`, it uses a generic "Continue to the next station of [Virtue]."
+If you omit `href`, the button is a placeholder (`#`). In Canvas, you can either set this to your next page's URL or just leave it as `#` and let students use Canvas's built-in Next button.
+
+### Embed code
+
+```html
+<iframe
+  src="https://YOUR_USERNAME.github.io/virtue-expedition/up-next/?virtue=courage&nextStation=2&headline=The%20Lamp-Lighter%E2%80%99s%20Daughter&tagline=A%20storm%20is%20rolling%20in..."
+  width="100%" height="200" frameborder="0" scrolling="no"
   style="display:block;border:0;max-width:820px;margin:0 auto 20px;">
 </iframe>
 ```

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Up Next — The Virtue Expedition</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <script src="../shared/virtues.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      overflow: hidden;
+    }
+
+    .up-next-panel {
+      width: 100%;
+      max-width: 820px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid var(--cream-line);
+      border-radius: 20px;
+      padding: 24px 28px;
+      box-sizing: border-box;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--amber-primary);
+      letter-spacing: 0.12em;
+      margin: 0 0 16px;
+      text-transform: uppercase;
+      animation: fadeSlide 0.6s ease-out both;
+    }
+
+    .content-row {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .preview-tile {
+      flex: 0 0 auto;
+      width: 140px;
+      height: 100px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1.5px solid var(--cream-line);
+      position: relative;
+      background: linear-gradient(180deg, #FFD9B0 0%, #F9D7C0 45%, #FAF3E4 85%);
+      animation: fadeSlide 0.7s ease-out 0.1s both;
+    }
+
+    .preview-tile svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .headline {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 500;
+      margin: 0 0 6px;
+      color: var(--text-dark);
+      line-height: 1.2;
+      animation: fadeSlide 0.7s ease-out 0.2s both;
+    }
+
+    .tagline {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--text-mid);
+      margin: 0 0 14px;
+      line-height: 1.5;
+      animation: fadeSlide 0.7s ease-out 0.3s both;
+    }
+
+    .cta {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, var(--amber-primary) 0%, var(--amber-dark) 100%);
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(133, 79, 11, 0.25);
+      transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+      animation: fadeSlide 0.7s ease-out 0.4s both;
+    }
+    .cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(133, 79, 11, 0.3);
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .content-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+      }
+      .preview-tile {
+        width: 100%;
+        height: 120px;
+      }
+      .headline { font-size: 19px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .eyebrow, .preview-tile, .headline, .tagline, .cta {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="up-next-panel">
+    <p class="eyebrow" id="eyebrow">Up Next &middot; Station 2</p>
+    <div class="content-row">
+      <div class="preview-tile" id="preview-tile">
+        <!-- Scene is injected by JS based on virtue -->
+      </div>
+      <div class="info">
+        <h3 class="headline" id="headline">The Lamp-Lighter&rsquo;s Daughter</h3>
+        <p class="tagline" id="tagline">A storm is rolling in, and a girl named Elowen is about to be asked something impossible.</p>
+        <a class="cta" id="cta" href="#">Continue the expedition &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================
+    // Up Next — URL-parameterized
+    // =========================================================
+    // Accepts:
+    //   ?virtue=courage              (current virtue - default courage)
+    //   ?nextStation=2               (station the preview points to - default: station+1)
+    //   ?headline=The+Lamp-Lighter   (URL-encoded activity title)
+    //   ?tagline=A+storm...          (URL-encoded one-sentence teaser)
+    //   ?href=https://...            (optional URL for Continue button; default '#')
+    // =========================================================
+
+    const P = new URLSearchParams(window.location.search);
+    const virtueKey = window.VIRTUE_EXPEDITION.normalizeVirtueKey(P.get('virtue')) || 'courage';
+    const nextStation = parseInt(P.get('nextStation'), 10) || 2;
+    const customHeadline = P.get('headline');
+    const customTagline = P.get('tagline');
+    const href = P.get('href') || '#';
+
+    const virtue = window.VIRTUE_EXPEDITION.virtues[virtueKey]
+                 || window.VIRTUE_EXPEDITION.virtues.courage;
+    const station = window.VIRTUE_EXPEDITION.stations[nextStation]
+                  || window.VIRTUE_EXPEDITION.stations[2];
+
+    // Populate eyebrow
+    document.getElementById('eyebrow').textContent = `Up Next · Station ${nextStation}`;
+
+    // Populate headline
+    if (customHeadline) {
+      document.getElementById('headline').textContent = decodeURIComponent(customHeadline);
+    } else {
+      document.getElementById('headline').textContent = `${station.name}: ${virtue.label}`;
+    }
+
+    // Populate tagline
+    if (customTagline) {
+      document.getElementById('tagline').textContent = decodeURIComponent(customTagline);
+    } else {
+      document.getElementById('tagline').textContent = `Continue to the next station of ${virtue.label}.`;
+    }
+
+    // Populate CTA href
+    document.getElementById('cta').href = href;
+
+    // ---- Virtue-specific preview scene ----
+    // Each virtue gets a small landscape tile showing its landmark
+    const SCENES = {
+      courage: `
+        <svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="25" r="10" fill="#F7A928" opacity="0.7"/>
+          <path d="M 0,60 Q 40,45 80,55 Q 110,65 140,55 L 140,100 L 0,100 Z" fill="#85A36A"/>
+          <path d="M 0,78 Q 40,70 90,78 Q 120,82 140,78 L 140,100 L 0,100 Z" fill="#5C7E48"/>
+          <!-- Lantern tower -->
+          <rect x="66" y="52" width="14" height="26" fill="#C9A876" stroke="#7A5D3A" stroke-width="0.75"/>
+          <path d="M 64,52 L 73,44 L 82,52 Z" fill="#A0522D"/>
+          <rect x="70" y="60" width="6" height="6" fill="#3E2510"/>
+          <circle cx="73" cy="40" r="5" fill="#F7A928"/>
+          <path d="M 73,36 Q 75,40 73,43 Q 71,40 73,36 Z" fill="#E07A3C"/>
+          <!-- Rain -->
+          <g stroke="#7FA8C9" stroke-width="0.75" opacity="0.5">
+            <line x1="30" y1="10" x2="26" y2="25"/>
+            <line x1="50" y1="5" x2="46" y2="20"/>
+            <line x1="100" y1="13" x2="96" y2="28"/>
+            <line x1="115" y1="8" x2="111" y2="23"/>
+          </g>
+        </svg>
+      `,
+      honesty: `
+        <svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="25" r="10" fill="#F7A928" opacity="0.7"/>
+          <path d="M 0,60 Q 40,45 80,55 Q 110,65 140,55 L 140,100 L 0,100 Z" fill="#85A36A"/>
+          <path d="M 0,78 Q 40,70 90,78 Q 120,82 140,78 L 140,100 L 0,100 Z" fill="#5C7E48"/>
+          <!-- Scale -->
+          <rect x="66" y="76" width="14" height="4" fill="#7A8086"/>
+          <line x1="73" y1="76" x2="73" y2="50" stroke="#7A8086" stroke-width="2"/>
+          <line x1="60" y1="50" x2="86" y2="50" stroke="#7A8086" stroke-width="2" stroke-linecap="round"/>
+          <line x1="60" y1="50" x2="60" y2="58" stroke="#9499A0" stroke-width="0.75"/>
+          <line x1="86" y1="50" x2="86" y2="58" stroke="#9499A0" stroke-width="0.75"/>
+          <path d="M 55,58 Q 60,63 65,58 Z" fill="#B8BEC4"/>
+          <path d="M 81,58 Q 86,63 91,58 Z" fill="#B8BEC4"/>
+          <circle cx="73" cy="48" r="2" fill="#4F9BA8"/>
+        </svg>
+      `,
+      responsibility: `
+        <svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="25" r="10" fill="#F7A928" opacity="0.7"/>
+          <path d="M 0,60 Q 40,45 80,55 Q 110,65 140,55 L 140,100 L 0,100 Z" fill="#85A36A"/>
+          <path d="M 0,78 Q 40,70 90,78 Q 120,82 140,78 L 140,100 L 0,100 Z" fill="#5C7E48"/>
+          <!-- Oak -->
+          <rect x="70" y="60" width="6" height="20" fill="#7D5A3A"/>
+          <circle cx="64" cy="56" r="11" fill="#6B8E4F"/>
+          <circle cx="80" cy="54" r="12" fill="#7A9D5C"/>
+          <circle cx="73" cy="46" r="10" fill="#5F7F45"/>
+          <circle cx="71" cy="60" r="8" fill="#6B8E4F"/>
+        </svg>
+      `,
+      courtesy: `
+        <svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="25" r="10" fill="#F7A928" opacity="0.7"/>
+          <path d="M 0,60 Q 40,45 80,55 Q 110,65 140,55 L 140,100 L 0,100 Z" fill="#85A36A"/>
+          <path d="M 0,78 Q 40,70 90,78 Q 120,82 140,78 L 140,100 L 0,100 Z" fill="#5C7E48"/>
+          <!-- Arch -->
+          <rect x="58" y="50" width="6" height="30" fill="#BFB0A0"/>
+          <rect x="82" y="50" width="6" height="30" fill="#BFB0A0"/>
+          <path d="M 58,50 Q 73,38 88,50" stroke="#A69684" stroke-width="5" fill="none"/>
+          <rect x="56" y="50" width="10" height="3" fill="#A69684"/>
+          <rect x="80" y="50" width="10" height="3" fill="#A69684"/>
+        </svg>
+      `,
+      service: `
+        <svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="25" r="10" fill="#F7A928" opacity="0.7"/>
+          <path d="M 0,60 Q 40,45 80,55 Q 110,65 140,55 L 140,100 L 0,100 Z" fill="#85A36A"/>
+          <path d="M 0,78 Q 40,70 90,78 Q 120,82 140,78 L 140,100 L 0,100 Z" fill="#5C7E48"/>
+          <!-- Bridge -->
+          <path d="M 55,72 Q 73,55 91,72" stroke="#9B7049" stroke-width="2.5" fill="none"/>
+          <path d="M 55,74 Q 73,57 91,74" stroke="#7D5A3A" stroke-width="1.5" fill="none"/>
+          <line x1="55" y1="72" x2="55" y2="78" stroke="#7D5A3A" stroke-width="1.5"/>
+          <line x1="91" y1="72" x2="91" y2="78" stroke="#7D5A3A" stroke-width="1.5"/>
+          <path d="M 52,80 Q 60,78 68,80 Q 76,82 84,80 Q 92,78 96,80" stroke="#7FA8C9" stroke-width="1" fill="none" opacity="0.7"/>
+        </svg>
+      `,
+      perseverance: `
+        <svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="25" r="10" fill="#F7A928" opacity="0.7"/>
+          <path d="M 0,60 Q 40,45 80,55 Q 110,65 140,55 L 140,100 L 0,100 Z" fill="#85A36A"/>
+          <path d="M 0,78 Q 40,70 90,78 Q 120,82 140,78 L 140,100 L 0,100 Z" fill="#5C7E48"/>
+          <!-- Mountain -->
+          <path d="M 48,78 L 73,30 L 98,78 Z" fill="#6A7A85"/>
+          <path d="M 66,48 L 73,30 L 79,48 L 73,54 Z" fill="#FFFFFF"/>
+          <line x1="73" y1="30" x2="73" y2="18" stroke="#412402" stroke-width="1"/>
+          <path d="M 73,18 L 81,20 L 73,23 Z" fill="#D89B9B"/>
+        </svg>
+      `,
+      selfgovt: `
+        <svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="25" r="10" fill="#F7A928" opacity="0.7"/>
+          <path d="M 0,60 Q 40,45 80,55 Q 110,65 140,55 L 140,100 L 0,100 Z" fill="#85A36A"/>
+          <path d="M 0,78 Q 40,70 90,78 Q 120,82 140,78 L 140,100 L 0,100 Z" fill="#5C7E48"/>
+          <!-- Compass on column -->
+          <rect x="68" y="60" width="10" height="18" fill="#BFB0A0"/>
+          <rect x="66" y="58" width="14" height="3" fill="#A69684"/>
+          <circle cx="73" cy="52" r="9" fill="#FFFFFF" stroke="#8A6FA8" stroke-width="1"/>
+          <path d="M 73,45 L 75,52 L 73,59 L 71,52 Z" fill="#8A6FA8"/>
+          <path d="M 80,52 L 73,50 L 66,52 L 73,54 Z" fill="#6B527F"/>
+          <circle cx="73" cy="52" r="1.2" fill="#412402"/>
+        </svg>
+      `,
+    };
+
+    document.getElementById('preview-tile').innerHTML = SCENES[virtueKey] || SCENES.courage;
+
+    // Report height to parent frame
+    function reportHeight() {
+      try {
+        window.parent.postMessage({
+          type: 'virtue-widget-height',
+          widget: 'up-next',
+          height: document.body.scrollHeight
+        }, '*');
+      } catch (e) {}
+    }
+    window.addEventListener('load', reportHeight);
+    window.addEventListener('resize', reportHeight);
+  </script>
+</body>
+</html>
